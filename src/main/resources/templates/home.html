@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>COVID-19 в России</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+<h1>COVID-19 в России</h1>
+
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading" th:text="${totalActiveCases}"></h4>
+    <p>активных случаев</p>
+    <hr>
+    <p class="mb-0" th:text="${totalConfirmedCases}"></p>
+    <p style="display:inline">заболело всего</p>
+</div>
+
+<table class="table">
+    <tr>
+        <th>Регион</th>
+        <th>Заболели</th>
+        <th>Активные случаи</th>
+    </tr>
+    <tr th:each="regionStat : ${regionStats}">
+        <td th:text="${regionStat.name}"></td>
+        <td th:text="${regionStat.confirmed}">0</td>
+        <td th:text="${regionStat.active}">0</td>
+    </tr>
+</table>
+</div>
+</body>
+
+</html>
