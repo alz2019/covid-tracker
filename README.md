@@ -3,7 +3,7 @@ COVID-19 tracker
 
 Shows the number of active cases in Russia.
 
-Uses Mediazona's dataset: https://github.com/mediazona/data-corona-Russia
+Uses Minzdrav's dataset: https://covid19.rosminzdrav.ru/wp-json/api/mapdata/
 
 ## Built With
 

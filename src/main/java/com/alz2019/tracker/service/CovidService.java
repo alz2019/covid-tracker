@@ -1,6 +1,6 @@
 package com.alz2019.tracker.service;
 
-import com.alz2019.tracker.model.RegionStats;
+import com.alz2019.tracker.model.RegionalStats;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,48 +13,46 @@ import java.util.List;
 
 @Service
 public class CovidService {
-    public List<RegionStats> getAllStats() {
-        return allStats;
-    }
-
-    private List<RegionStats> allStats = new ArrayList<>();
+    private List<RegionalStats> allStats = new ArrayList<>();
 
     @PostConstruct
     @Scheduled(cron = "0 59 10 * * ?")
     public void fetch() throws IOException {
-        NetworkDAO networkDAO = new NetworkDAO();
-        List<RegionStats> newStats = new ArrayList<>();
-        String rawJSON = networkDAO.request("https://raw.githubusercontent.com/mediazona/data-corona-Russia/master/data.json");
+        JSONArray regions = downloadData();
+        updateRegionalStats(regions);
+    }
+
+    private JSONArray downloadData() throws IOException {
+        String rawJSON = new NetworkDAO().request("https://covid19.rosminzdrav.ru/wp-json/api/mapdata/");
         JSONObject root = new JSONObject(rawJSON);
-        JSONArray regions = root.getJSONArray("data");
+        return root.getJSONArray("Items");
+    }
+
+    private void updateRegionalStats(JSONArray regions) {
+        List<RegionalStats> newStats = new ArrayList<>();
         for (int i = 0; i < regions.length(); i++) {
             JSONObject jsonRegion = regions.getJSONObject(i);
-            RegionStats regionStats = new RegionStats();
-            String name = jsonRegion.getString("name");
-            JSONArray confirmedCases = jsonRegion.getJSONArray("confirmed");
-            JSONArray deadCases = jsonRegion.getJSONArray("dead");
-            JSONArray recoveredCases = jsonRegion.getJSONArray("recovered");
-            int confirmed = 0, dead = 0, recovered = 0, active = 0;
-            for (int j = 0; j < confirmedCases.length(); j++) {
-                confirmed += confirmedCases.getInt(j);
-                dead += deadCases.getInt(j);
-                recovered += recoveredCases.getInt(j);
-            }
-            active = confirmed - dead - recovered;
-            regionStats.setName(name);
-            regionStats.setConfirmed(confirmed);
-            regionStats.setActive(active);
-            newStats.add(regionStats);
+            RegionalStats regionalStats = new RegionalStats();
+            regionalStats.setName(jsonRegion.getString("LocationName"));
+            regionalStats.setConfirmed(jsonRegion.getInt("Confirmed"));
+            regionalStats.setRecovered(jsonRegion.getInt("Recovered"));
+            regionalStats.setDead(jsonRegion.getInt("Deaths"));
+            regionalStats.computeActive();
+            newStats.add(regionalStats);
         }
-        sortByConfirmedCases(newStats);
+        sortRegionsByConfirmedCases(newStats);
         this.allStats = newStats;
     }
 
-    private void sortByConfirmedCases(List<RegionStats> list) {
+    private void sortRegionsByConfirmedCases(List<RegionalStats> list) {
         list.sort((o1, o2) -> {
             if (o1.getConfirmed() == o2.getConfirmed())
                 return 0;
             return o1.getConfirmed() < o2.getConfirmed() ? 1 : -1;
         });
+    }
+
+    public List<RegionalStats> getAllStats() {
+        return allStats;
     }
 }

@@ -1,6 +1,6 @@
 package com.alz2019.tracker.controller;
 
-import com.alz2019.tracker.model.RegionStats;
+import com.alz2019.tracker.model.RegionalStats;
 import com.alz2019.tracker.service.CovidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,14 +16,14 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<RegionStats> allStats = covidService.getAllStats();
+        List<RegionalStats> allStats = covidService.getAllStats();
         int totalActiveCases = allStats.stream()
-                .mapToInt(RegionStats::getActive)
+                .mapToInt(RegionalStats::getActive)
                 .sum();
         int totalConfirmedCases = allStats.stream()
-                .mapToInt(RegionStats::getConfirmed)
+                .mapToInt(RegionalStats::getConfirmed)
                 .sum();
-        model.addAttribute("regionStats", covidService.getAllStats());
+        model.addAttribute("regionalStats", covidService.getAllStats());
         model.addAttribute("totalActiveCases", totalActiveCases);
         model.addAttribute("totalConfirmedCases", totalConfirmedCases);
         return "home";
