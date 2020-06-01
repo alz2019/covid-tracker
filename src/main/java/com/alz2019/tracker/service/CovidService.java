@@ -17,7 +17,7 @@ public class CovidService {
 
     @PostConstruct
     @Scheduled(cron = "0 59 10 * * ?")
-    public void fetch() throws IOException {
+    private void fetch() throws IOException {
         JSONArray regions = downloadData();
         updateRegionalStats(regions);
     }
