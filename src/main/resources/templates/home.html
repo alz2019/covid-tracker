@@ -29,12 +29,12 @@
             <th>Умерли</th>
             <th>Активные случаи</th>
         </tr>
-        <tr th:each="region : ${regionalStats}">
-            <td th:text="${region.name}"></td>
-            <td th:text="${region.confirmed}">0</td>
-            <td th:text="${region.recovered}">0</td>
-            <td th:text="${region.dead}">0</td>
-            <td th:text="${region.active}">0</td>
+        <tr th:each="stat : ${stats}">
+            <td th:text="${stat.name}"></td>
+            <td th:text="${stat.confirmed}">0</td>
+            <td th:text="${stat.recovered}">0</td>
+            <td th:text="${stat.dead}">0</td>
+            <td th:text="${stat.active}">0</td>
         </tr>
     </table>
 </div>

@@ -1,10 +1,10 @@
-package com.alz2019.tracker.service;
+package com.alz2019.tracker.data;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class NetworkDAO {
+public class NetworkDao {
     public String request(String endpoint) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
