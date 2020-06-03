@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface RegionDao {
-    void fetchData() throws IOException;
+    void fetchData();
 
     List<Region> getAllStats();
 }

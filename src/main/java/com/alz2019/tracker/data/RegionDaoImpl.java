@@ -20,7 +20,7 @@ public class RegionDaoImpl implements RegionDao {
     private List<Region> allStats = new ArrayList<>();
 
     @PostConstruct
-    @Scheduled(cron = "0 59 10 * * ?")
+    @Scheduled(cron = "0 35 10 * * ?")
     public void fetchData() {
         JSONArray regions = downloadData();
 
