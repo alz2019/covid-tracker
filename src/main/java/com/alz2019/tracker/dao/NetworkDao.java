@@ -1,4 +1,4 @@
-package com.alz2019.tracker.data;
+package com.alz2019.tracker.dao;
 
 import java.io.*;
 import java.net.HttpURLConnection;

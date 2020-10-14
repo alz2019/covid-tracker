@@ -1,6 +1,6 @@
 package com.alz2019.tracker.controller;
 
-import com.alz2019.tracker.data.RegionDao;
+import com.alz2019.tracker.dao.RegionDao;
 import com.alz2019.tracker.model.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

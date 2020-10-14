@@ -1,4 +1,4 @@
-package com.alz2019.tracker.data;
+package com.alz2019.tracker.dao;
 
 import com.alz2019.tracker.exception.RegionDaoException;
 import com.alz2019.tracker.model.Region;
