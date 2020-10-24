@@ -26,6 +26,6 @@ class TrackerApplicationTests {
 
     @Test
     void testListNotContains() {
-        assertTrue(dao.getAllStats().stream().noneMatch(region -> region.getName().contains("Минск")));
+        assertTrue(dao.getAllStats().stream().noneMatch(region -> region.getName().contains("Гомельская")));
     }
 }
