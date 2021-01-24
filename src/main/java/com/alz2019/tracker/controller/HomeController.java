@@ -1,6 +1,6 @@
 package com.alz2019.tracker.controller;
 
-import com.alz2019.tracker.dao.RegionDao;
+import com.alz2019.tracker.service.RegionService;
 import com.alz2019.tracker.model.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    RegionDao regions;
+    RegionService regions;
 
     @GetMapping("/")
     public String home(Model model) {

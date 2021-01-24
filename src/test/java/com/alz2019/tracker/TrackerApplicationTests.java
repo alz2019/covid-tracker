@@ -1,6 +1,6 @@
 package com.alz2019.tracker;
 
-import com.alz2019.tracker.dao.RegionDao;
+import com.alz2019.tracker.service.RegionService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = TrackerApplication.class)
 class TrackerApplicationTests {
     @Autowired
-    RegionDao dao;
+    RegionService dao;
 
     @Test
     void contextLoads() {

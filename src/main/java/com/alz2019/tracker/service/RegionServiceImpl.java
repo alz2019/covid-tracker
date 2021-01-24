@@ -1,7 +1,9 @@
-package com.alz2019.tracker.dao;
+package com.alz2019.tracker.service;
 
+import com.alz2019.tracker.dao.NetworkDao;
 import com.alz2019.tracker.exception.RegionDaoException;
 import com.alz2019.tracker.model.Region;
+import com.google.common.collect.ImmutableList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,29 +15,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 @Service
-public class RegionDaoImpl implements RegionDao {
-    private List<Region> allStats = new ArrayList<>();
+public class RegionServiceImpl implements RegionService {
+    private List<Region> allStats;
 
     @PostConstruct
     @Scheduled(cron = "0 35 10 * * ?")
     public void fetchData() {
         JSONArray regions = downloadData();
-
         updateRegionalStats(regions);
     }
 
     private JSONArray downloadData() {
         String rawJson = "";
         try {
-            rawJson = new NetworkDao().request("https://covid19.rosminzdrav.ru/wp-json/api/mapdata/");
+            rawJson = getRawJson();
         } catch (IOException e) {
             throw new RegionDaoException("The requested data is not available", e);
         }
         JSONObject root = new JSONObject(rawJson);
         return root.getJSONArray("Items");
+    }
+
+    private String getRawJson() throws IOException {
+        return new NetworkDao().request("https://covid19.rosminzdrav.ru/wp-json/api/mapdata/");
     }
 
     private void updateRegionalStats(JSONArray regions) {
@@ -58,7 +64,7 @@ public class RegionDaoImpl implements RegionDao {
         return regions.stream()
                 .filter(region -> !region.getName().equals("No region speified"))
                 .sorted(comparingInt(Region::getConfirmed).reversed())
-                .collect(toList());
+                .collect(collectingAndThen(toList(), ImmutableList::copyOf));
     }
 
     public List<Region> getAllStats() {
