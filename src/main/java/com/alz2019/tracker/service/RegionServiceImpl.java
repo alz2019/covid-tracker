@@ -40,7 +40,7 @@ public class RegionServiceImpl implements RegionService {
         return root.getJSONArray("Items");
     }
 
-    private String getRawJson() throws IOException {
+    String getRawJson() throws IOException {
         return new NetworkDao().request("https://covid19.rosminzdrav.ru/wp-json/api/mapdata/");
     }
 
