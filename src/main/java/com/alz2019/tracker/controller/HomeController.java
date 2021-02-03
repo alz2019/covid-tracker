@@ -1,8 +1,7 @@
 package com.alz2019.tracker.controller;
 
-import com.alz2019.tracker.service.RegionService;
 import com.alz2019.tracker.model.Region;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alz2019.tracker.service.RegionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +10,11 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-    @Autowired
-    RegionService regions;
+    private final RegionService regions;
+
+    public HomeController(RegionService regions) {
+        this.regions = regions;
+    }
 
     @GetMapping("/")
     public String home(Model model) {
