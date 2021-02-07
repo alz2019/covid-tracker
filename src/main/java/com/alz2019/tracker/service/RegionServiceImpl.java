@@ -23,7 +23,7 @@ public class RegionServiceImpl implements RegionService {
     private List<Region> allStats;
 
     @PostConstruct
-    @Scheduled(cron = "0 35 10 * * ?")
+    @Scheduled(cron = "0 20 11 * * *")
     public void fetchData() {
         JSONArray regions = downloadData();
         updateRegionalStats(regions);
