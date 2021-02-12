@@ -6,6 +6,7 @@ import com.alz2019.tracker.model.Region;
 import com.google.common.collect.ImmutableList;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class RegionServiceImpl implements RegionService {
     private List<Region> allStats;
+
+    @Value("${application.statsUrlTemplate}")
+    private String statsUrl;
 
     @PostConstruct
     @Scheduled(cron = "0 20 11 * * *")
@@ -41,7 +45,7 @@ public class RegionServiceImpl implements RegionService {
     }
 
     String getRawJson() throws IOException {
-        return new NetworkDao().request("https://covid19.rosminzdrav.ru/wp-json/api/mapdata/");
+        return new NetworkDao().request(statsUrl);
     }
 
     private void updateRegionalStats(JSONArray regions) {
